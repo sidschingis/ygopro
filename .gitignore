@@ -1,0 +1,16 @@
+bin
+obj
+build
+release
+*.o
+*.dll
+*.vcxproj*
+*.sln
+*.sdf
+*.opensdf*
+*.suo
+*.cd
+*.aps
+irrlicht/
+lua/
+sqlite3/
