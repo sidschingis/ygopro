@@ -8,6 +8,7 @@
 #include "duelclient.h"
 #include "netserver.h"
 #include "single_mode.h"
+#include "devpro.h"
 
 #ifndef _WIN32
 #include <sys/types.h>
@@ -603,6 +604,10 @@ bool Game::Initialize() {
 	}
 	hideChat = false;
 	hideChatTimer = 0;
+
+	//DevPro
+	DevPro::Init();
+
 	return true;
 }
 void Game::MainLoop() {

@@ -1,5 +1,6 @@
 #include "config.h"
 #include "game.h"
+//#include "devpro.h"
 #include "data_manager.h"
 #include <event2/thread.h>
 
@@ -139,6 +140,9 @@ int main(int argc, char* argv[]) {
 				ClickButton(ygo::mainGame->btnLoadSinglePlay);
 			break;
 		}
+		/*else if (ygo::DevPro::ParseArg(argv, i)) {
+			exit_on_return = !keep_on_return;
+		}*/
 	}
 	ygo::mainGame->MainLoop();
 #ifdef _WIN32
