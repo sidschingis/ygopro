@@ -606,7 +606,7 @@ bool Game::Initialize() {
 	hideChatTimer = 0;
 
 	//DevPro
-	DevPro::Init();
+	DevPro::Instance()->Init();
 
 	return true;
 }

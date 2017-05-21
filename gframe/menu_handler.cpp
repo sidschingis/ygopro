@@ -7,6 +7,7 @@
 #include "single_mode.h"
 #include "image_manager.h"
 #include "game.h"
+#include "devpro.h"
 
 namespace ygo {
 
@@ -419,6 +420,10 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 	}
 	default: break;
 	}
+
+	//DevPro Stuff
+	DevPro::Instance()->OnEvent(event);
+
 	return false;
 }
 

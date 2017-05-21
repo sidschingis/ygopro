@@ -1,8 +1,8 @@
 #include "config.h"
 #include "game.h"
-//#include "devpro.h"
 #include "data_manager.h"
 #include <event2/thread.h>
+//#include "devpro.h"
 
 int enable_log = 0;
 bool exit_on_return = false;
@@ -140,7 +140,7 @@ int main(int argc, char* argv[]) {
 				ClickButton(ygo::mainGame->btnLoadSinglePlay);
 			break;
 		}
-		/*else if (ygo::DevPro::ParseArg(argv, i)) {
+		/*else if (ygo::DevPro::Instance()->ParseArg(argv, i)) {
 			exit_on_return = !keep_on_return;
 		}*/
 	}
