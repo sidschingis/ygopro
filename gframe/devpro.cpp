@@ -107,6 +107,19 @@ namespace ygo {
 		return false;
 	}
 
+	void DevPro::HandleSTOCPacketLan(char* data, unsigned int len) {
+		char* pdata = data;
+		unsigned char pktType = BufferIO::ReadUInt8(pdata);
+		switch (pktType) {
+		case STOC_DUEL_START: {
+			mainGame->btnLeaveGame->setText(dataManager.GetSysString(1350));
+			mainGame->btnLeaveGame->setVisible(true);
+			break;
+		}
+		}
+
+	}
+
 	recti DevPro::ResizeWin(s32 x, s32 y, s32 x2, s32 y2, bool chat)
 	{
 		/*s32 sx = x2 - x;

@@ -18,6 +18,7 @@ namespace ygo {
 		void ClickButton(irr::gui::IGUIElement* btn);
 		GUIAIMode wAI;
 		recti ResizeWin(s32 x, s32 y, s32 x2, s32 y2, bool chat);
+		void HandleSTOCPacketLan(char* data, unsigned int len);
 	private:
 		static DevPro* devPro;
 		DevPro();

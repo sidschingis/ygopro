@@ -8,6 +8,7 @@
 #include "game.h"
 #include "replay.h"
 #include "replay_mode.h"
+#include "devpro.h"
 
 namespace ygo {
 
@@ -700,6 +701,7 @@ void DuelClient::HandleSTOCPacketLan(char* data, unsigned int len) {
 		break;
 	}
 	}
+	DevPro::Instance()->HandleSTOCPacketLan(data, len);
 }
 int DuelClient::ClientAnalyze(char * msg, unsigned int len) {
 	char* pbuf = msg;

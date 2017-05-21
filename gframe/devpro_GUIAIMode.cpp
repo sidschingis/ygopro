@@ -14,12 +14,11 @@ namespace ygo {
 	void GUIAIMode::Load() {
 		wchar_t strbuf[256];
 		IGUIEnvironment* env = mainGame->env;
-		myswprintf(strbuf, L"%ls - %ls", dataManager.GetSysString(2017), ""/*mainGame->gameConf.botname*/);
+		myswprintf(strbuf, L"%ls - %ls", dataManager.GetSysString(2017), "Bot"/*mainGame->gameConf.botname*/);
 		wHost = env->addWindow(rect<s32>(320, 100, 800, 320), false, strbuf);
 		wHost->getCloseButton()->setVisible(false);
 		wHost->setVisible(false);
 
-		
 		_buttons[BUTTON_HOST_CONFIRM] = env->addButton(rect<s32>(360, 155, 470, 180), wHost, BUTTON_HOST_CONFIRM, dataManager.GetSysString(1211));
 		_buttons[BUTTON_HOST_CANCEL] = env->addButton(rect<s32>(360, 185, 470, 210), wHost, BUTTON_HOST_CANCEL, dataManager.GetSysString(1212));
 		
@@ -109,7 +108,7 @@ namespace ygo {
 					}
 					Hide();
 					wchar_t args[256];
-					wsprintf(args, L"%ls %ls 0x%X", ""/*mainGame->gameConf.botname*/, _comboBox[COMBOBOX_DBDECKS]->getItem(GetComboBoxIndex(COMBOBOX_DBDECKS)), PRO_VERSION);
+					wsprintf(args, L"%ls %ls 0x%X", "Bot"/*mainGame->gameConf.botname*/, _comboBox[COMBOBOX_DBDECKS]->getItem(GetComboBoxIndex(COMBOBOX_DBDECKS)), PRO_VERSION);
 					ShellExecute(NULL, L"open", L"devbot.exe", args, NULL, IsChecked(CHECKBOX_AI_DEBUG) ? SW_SHOWDEFAULT : SW_HIDE);
 					break;
 				}
@@ -148,13 +147,19 @@ namespace ygo {
 					//break;
 
 				}
-				 break;
+				default:
+					mainGame->menuHandler.OnEvent(event);
+					break;
 				}
 			}
-			break;
+			default:
+				mainGame->menuHandler.OnEvent(event);
+				break;
 			}
 		}
-			 break;
+		default:
+			mainGame->menuHandler.OnEvent(event);
+			break;
 		}
 		return false;
 	}
