@@ -10,10 +10,18 @@
 #include "single_mode.h"
 #include "materials.h"
 #include "../ocgcore/field.h"
+#include "devpro.h"
 
 namespace ygo {
 
 bool ClientField::OnEvent(const irr::SEvent& event) {
+
+	if (DevPro::Instance()->eventHandler.OnEvent(event))
+	{
+		return false;
+	}
+
+
 	switch(event.EventType) {
 	case irr::EET_GUI_EVENT: {
 		s32 id = event.GUIEvent.Caller->getID();

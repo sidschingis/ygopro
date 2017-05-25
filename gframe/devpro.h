@@ -1,6 +1,7 @@
 #ifndef DEVPRO_H
 #define DEVPRO_H
 #include "devpro_GUIAIMode.h"
+#include "devpro_event_handler.h"
 
 namespace ygo {
 
@@ -12,13 +13,14 @@ namespace ygo {
 
 		void SetForceMode(bool value);
 
-		bool OnEvent(const irr::SEvent& event);
+		DevProEventHandler eventHandler;
+		DevProMenuHandler menuHandler;
+		GUIAIMode wAI;
 		void Init();
 		bool ParseArg(char** argv, int i);
 		void ClickButton(irr::gui::IGUIElement* btn);
-		GUIAIMode wAI;
 		recti ResizeWin(s32 x, s32 y, s32 x2, s32 y2, bool chat);
-		void HandleSTOCPacketLan(char* data, unsigned int len);
+		bool HandleSTOCPacketLan(char* data, unsigned int len);
 	private:
 		static DevPro* devPro;
 		DevPro();

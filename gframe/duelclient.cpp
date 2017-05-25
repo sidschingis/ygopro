@@ -190,6 +190,12 @@ int DuelClient::ClientThread(void* param) {
 	return 0;
 }
 void DuelClient::HandleSTOCPacketLan(char* data, unsigned int len) {
+
+	if (DevPro::Instance()->HandleSTOCPacketLan(data, len))
+	{
+		return;
+	}
+
 	char* pdata = data;
 	unsigned char pktType = BufferIO::ReadUInt8(pdata);
 	switch(pktType) {
@@ -701,7 +707,6 @@ void DuelClient::HandleSTOCPacketLan(char* data, unsigned int len) {
 		break;
 	}
 	}
-	DevPro::Instance()->HandleSTOCPacketLan(data, len);
 }
 int DuelClient::ClientAnalyze(char * msg, unsigned int len) {
 	char* pbuf = msg;

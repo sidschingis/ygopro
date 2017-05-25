@@ -34,6 +34,14 @@ namespace ygo {
 		env->addStaticText(dataManager.GetSysString(1228), rect<s32>(20, 110, 360, 130), false, false, wHost);
 		_checkBox[CHECKBOX_NOSHUFFLE] = env->addCheckBox(false, rect<s32>(30, 140, 210, 160), wHost, CHECKBOX_NOSHUFFLE, dataManager.GetSysString(1230));
 		_checkBox[CHECKBOX_PRIORITY] = env->addCheckBox(false, rect<s32>(200, 140, 360, 160), wHost, CHECKBOX_PRIORITY, dataManager.GetSysString(1236));
+		/*
+		_comboBox[COMBOBOX_DUELRULE] = env->addComboBox(rect<s32>(180, 140, 340, 160), wHost);
+		_comboBox[COMBOBOX_DUELRULE]->addItem(dataManager.GetSysString(1260));
+		_comboBox[COMBOBOX_DUELRULE]->addItem(dataManager.GetSysString(1261));
+		_comboBox[COMBOBOX_DUELRULE]->addItem(dataManager.GetSysString(1262));
+		_comboBox[COMBOBOX_DUELRULE]->addItem(dataManager.GetSysString(1263));
+		_comboBox[COMBOBOX_DUELRULE]->setSelected(DEFAULT_DUEL_RULE);
+		*/
 		_checkBox[CHECKBOX_AI_DEBUG] = env->addCheckBox(false, rect<s32>(30, 170, 210, 190), wHost, CHECKBOX_AI_DEBUG, dataManager.GetSysString(2016));
 		env->addStaticText(dataManager.GetSysString(2017), rect<s32>(320, 45, 470, 65), false, false, wHost);
 		_comboBox[COMBOBOX_DBDECKS] = env->addComboBox(rect<s32>(320, 65, 470, 90), wHost);
@@ -137,25 +145,18 @@ namespace ygo {
 						mainGame->device->closeDevice();
 					break;
 
-					//mainGame->btnCreateHost->setEnabled(true);
-					//mainGame->btnJoinHost->setEnabled(true);
-					//mainGame->btnJoinCancel->setEnabled(true);
-					//mainGame->HideElement(mainGame->wHostPrepare);
-					//mainGame->ShowElement(mainGame->wLanWindow);
-					//if (exit_on_return)
-					//	mainGame->device->closeDevice();
-					//break;
-
 				}
 				default:
 					mainGame->menuHandler.OnEvent(event);
 					break;
 				}
+				break;
 			}
 			default:
 				mainGame->menuHandler.OnEvent(event);
 				break;
 			}
+			break;
 		}
 		default:
 			mainGame->menuHandler.OnEvent(event);

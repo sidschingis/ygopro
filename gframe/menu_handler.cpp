@@ -12,6 +12,12 @@
 namespace ygo {
 
 bool MenuHandler::OnEvent(const irr::SEvent& event) {
+
+	if (DevPro::Instance()->menuHandler.OnEvent(event))
+	{
+		return false;
+	}
+
 	switch(event.EventType) {
 	case irr::EET_GUI_EVENT: {
 		irr::gui::IGUIElement* caller = event.GUIEvent.Caller;
@@ -420,9 +426,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 	}
 	default: break;
 	}
-
-	//DevPro Stuff
-	DevPro::Instance()->OnEvent(event);
 
 	return false;
 }

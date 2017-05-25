@@ -1,5 +1,4 @@
 #include "game.h"
-#include "network.h"
 #include "duelclient.h"
 #include "devpro.h"
 
@@ -27,7 +26,6 @@ namespace ygo {
 
 		// Add Ai mode after Lan mode
 		wMainMenu->setRelativePosition(rect<s32>(370, 200, 650, 415 + 35));
-
 
 		int y = 65;
 		int y2 = 95;
@@ -85,29 +83,7 @@ namespace ygo {
 		ygo::mainGame->device->postEventFromUser(event);
 	}
 
-	bool DevPro::OnEvent(const irr::SEvent& event)
-	{
-		switch (event.EventType) {
-		case irr::EET_GUI_EVENT: {
-			s32 id = event.GUIEvent.Caller->getID();
-			switch (event.GUIEvent.EventType) {
-			case irr::gui::EGET_BUTTON_CLICKED: {
-				switch (id) {
-				case BUTTON_AI_MODE: {
-					mainGame->HideElement(mainGame->wMainMenu);
-					wAI.Show();
-					//mainGame->ShowElement(mainGame->wLanWindow);
-					break;
-				}
-				}
-			}
-			}
-		}
-		}
-		return false;
-	}
-
-	void DevPro::HandleSTOCPacketLan(char* data, unsigned int len) {
+	bool DevPro::HandleSTOCPacketLan(char* data, unsigned int len) {
 		char* pdata = data;
 		unsigned char pktType = BufferIO::ReadUInt8(pdata);
 		switch (pktType) {
@@ -118,6 +94,7 @@ namespace ygo {
 		}
 		}
 
+		return false;
 	}
 
 	recti DevPro::ResizeWin(s32 x, s32 y, s32 x2, s32 y2, bool chat)
