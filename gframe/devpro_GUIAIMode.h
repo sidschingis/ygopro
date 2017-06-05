@@ -26,6 +26,7 @@ namespace ygo {
 		std::unordered_map<unsigned int, irr::gui::IGUIEditBox*> _editBox;
 		std::unordered_map<unsigned int, irr::gui::IGUIComboBox*> _comboBox;
 		std::unordered_map<unsigned int, irr::gui::IGUICheckBox*> _checkBox;
+		recti GetWindowSize();
 	};
 
 }

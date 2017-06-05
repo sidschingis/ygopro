@@ -52,6 +52,8 @@ namespace ygo {
 		y2 += 35;
 		mainGame->btnModeExit->setRelativePosition(rect<s32>(10, y, 270, y2));
 
+		window_size = dimension2du(1024, 640);
+		//mainGame->device->setResizable(true);
 	}
 
 	void DevPro::InitConfig()
@@ -186,9 +188,9 @@ namespace ygo {
 			//forced mode for DevPro ranked duels
 			if (config.forced) {
 				if (mainGame->cbDeckSelect->getSelected() == -1 ||
-					!deckManager.LoadDeck(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()))) {
-
-					return;
+					!deckManager.LoadDeck(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()))) 
+				{
+					return true;
 				}
 				BufferIO::CopyWStr(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()),
 					mainGame->gameConf.lastdeck, 20);
@@ -216,9 +218,19 @@ namespace ygo {
 		return false;
 	}
 
-	recti DevPro::ResizeWin(s32 x, s32 y, s32 x2, s32 y2, bool chat)
+
+	void DevPro::RunStep()
 	{
-		/*s32 sx = x2 - x;
+		dimension2du size = mainGame->driver->getScreenSize();
+		if (window_size != size) {
+			window_size = size;
+			OnResize();
+		}
+	}
+
+	recti DevPro::Resize(s32 x, s32 y, s32 x2, s32 y2, bool chat)
+	{
+		s32 sx = x2 - x;
 		s32 sy = y2 - y;
 		if (chat)
 		{
@@ -231,7 +243,69 @@ namespace ygo {
 		y = (y + sy / 2) * window_size.Height / 640 - sy / 2;
 		x2 = sx + x;
 		y2 = sy + y;
-		return recti(x, y, x2, y2);*/
-		return recti(0, 0, 0, 0);
+		return recti(x, y, x2, y2);
+	}
+
+	recti DevPro::Resize(recti rect, bool chat)
+	{
+		s32 x = rect.LowerRightCorner.X;
+		s32 y = rect.LowerRightCorner.Y;
+		s32 x2 = rect.UpperLeftCorner.X;
+		s32 y2 = rect.UpperLeftCorner.Y;
+
+		return Resize(x, y, x2, y2, chat);
+	}
+
+	void DevPro::OnResize()
+	{
+		wAI.OnResize();
+		/*wMenu.OnResize();
+		wEdit.OnResize();
+		wLan.OnResize();
+		wHost.OnResize();
+		wHostRoom.OnResize();
+		wReplayList.OnResize();
+		wSingleList.OnResize();
+		wHand->setRelativePosition(ResizeWin(500, 450, 825, 605));
+		wFTSelect->setRelativePosition(ResizeWin(550, 240, 780, 340));
+		wMessage->setRelativePosition(ResizeWin(490, 200, 840, 340));
+		wACMessage->setRelativePosition(ResizeWin(490, 240, 840, 300));
+		wQuery->setRelativePosition(ResizeWin(490, 200, 840, 340));
+		wOptions->setRelativePosition(ResizeWin(490, 200, 840, 340));
+		wPosSelect->setRelativePosition(ResizeWin(340, 200, 935, 410));
+		wCardSelect->setRelativePosition(ResizeWin(320, 100, 1000, 400));
+		wANNumber->setRelativePosition(ResizeWin(550, 200, 780, 295));
+		wANCard->setRelativePosition(ResizeWin(560, 170, 970, 370));
+		wANAttribute->setRelativePosition(ResizeWin(500, 200, 830, 285));
+		wANRace->setRelativePosition(ResizeWin(480, 200, 850, 385));
+		wReplaySave->setRelativePosition(ResizeWin(510, 200, 820, 320));
+		stHintMsg->setRelativePosition(ResizeWin(500, 60, 820, 90));
+
+		wChat.OnResize();
+		wInfoTab.OnResize();
+
+		btnLeaveGame->setRelativePosition(Resize(205, 5, 295, 80));
+		wReplayControl->setRelativePosition(Resize(205, 143, 295, 273));
+		btnReplayStart->setRelativePosition(Resize(5, 5, 85, 25));
+		btnReplayPause->setRelativePosition(Resize(5, 5, 85, 25));
+		btnReplayStep->setRelativePosition(Resize(5, 55, 85, 75));
+		btnReplayUndo->setRelativePosition(Resize(5, 80, 85, 100));
+		btnReplaySwap->setRelativePosition(Resize(5, 30, 85, 50));
+		btnReplayExit->setRelativePosition(Resize(5, 105, 85, 125));
+
+		wPhase->setRelativePosition(Resize(480, 310, 855, 330));
+		btnDP->setRelativePosition(Resize(0, 0, 50, 20));
+		btnSP->setRelativePosition(Resize(65, 0, 115, 20));
+		btnM1->setRelativePosition(Resize(130, 0, 180, 20));
+		btnBP->setRelativePosition(Resize(195, 0, 245, 20));
+		btnM2->setRelativePosition(Resize(260, 0, 310, 20));
+		btnEP->setRelativePosition(Resize(325, 0, 375, 20));
+		btnShuffle->setRelativePosition(Resize(0, 0, 50, 20));
+		btnChainAlways->setRelativePosition(Resize(205, 140, 295, 175));
+		btnChainIgnore->setRelativePosition(Resize(205, 100, 295, 135));
+		btnChainWhenAvail->setRelativePosition(Resize(205, 180, 295, 215));
+		btnCancelOrFinish->setRelativePosition(Resize(205, 230, 295, 265));
+		*/
+
 	}
 }

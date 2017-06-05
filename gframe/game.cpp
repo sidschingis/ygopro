@@ -626,6 +626,7 @@ void Game::MainLoop() {
 	int fps = 0;
 	int cur_time = 0;
 	while(device->run()) {
+		DevPro::Instance()->RunStep();
 		if(gameConf.use_d3d)
 			linePattern = (linePattern + 1) % 30;
 		else

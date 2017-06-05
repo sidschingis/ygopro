@@ -15,7 +15,7 @@ namespace ygo {
 		wchar_t strbuf[256];
 		IGUIEnvironment* env = mainGame->env;
 		myswprintf(strbuf, L"%ls - %ls", dataManager.GetSysString(2017), DevPro::Instance()->config.botname);
-		wHost = env->addWindow(rect<s32>(320, 100, 800, 320), false, strbuf);
+		wHost = env->addWindow(GetWindowSize(), false, strbuf);
 		wHost->getCloseButton()->setVisible(false);
 		wHost->setVisible(false);
 
@@ -84,9 +84,15 @@ namespace ygo {
 		return _comboBox[item]->getSelected();
 	}
 
-	void GUIAIMode::OnResize() {
-		//wHost->setRelativePosition(mainGame->ResizeWin(320, 100, 800, 320));
+	recti GUIAIMode::GetWindowSize()
+	{
+		return rect<s32>(320, 100, 800, 320);
 	}
+
+	void GUIAIMode::OnResize() {
+		wHost->setRelativePosition(DevPro::Instance()->Resize(GetWindowSize()));
+	}
+
 	void GUIAIMode::Show() {
 		RefreshDeck();
 		mainGame->PopupElement(wHost);

@@ -14,19 +14,22 @@ namespace ygo {
 
 		void SetForceMode(bool value);
 
+		irr::core::dimension2d<irr::u32> window_size;
 		DevProEventHandler eventHandler;
 		DevProMenuHandler menuHandler;
 		GUIAIMode wAI;
 		void Init();
 		bool ParseArg(char** argv, int i);
-		void ClickButton(irr::gui::IGUIElement* btn);
-		recti ResizeWin(s32 x, s32 y, s32 x2, s32 y2, bool chat);
 		bool HandleSTOCPacketLan(char* data, unsigned int len);
-
+		void ClickButton(irr::gui::IGUIElement* btn);
+		void RunStep();
+		recti Resize(s32 x, s32 y, s32 x2, s32 y2, bool chat = false);
+		recti Resize(recti rect, bool chat = false);
 		DevProConfig config;
 	private:
-		void InitConfig();
 		static DevPro* devPro;
+		void InitConfig();
+		void OnResize();
 		DevPro();
 	}; 
 
