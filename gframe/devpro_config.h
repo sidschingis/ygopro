@@ -6,6 +6,7 @@ namespace ygo {
 	struct DevProConfig {
 		bool enablesleeveloading;
 		wchar_t botname[20];
+		bool forced;
 	};
 
 }

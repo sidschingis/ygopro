@@ -56,7 +56,8 @@ namespace ygo {
 
 	void DevPro::InitConfig()
 	{
-		config.enablesleeveloading = false;
+		config.enablesleeveloading = false; 
+		config.forced = false;
 		BufferIO::CopyWStr(L"DevBot", config.botname, 20);
 
 		FILE* fp = fopen("system.conf", "r");
@@ -78,6 +79,9 @@ namespace ygo {
 			else if (!strcmp(strbuf, "botname")) {
 				BufferIO::DecodeUTF8(valbuf, wstr);
 				BufferIO::CopyWStr(wstr, config.botname, 20);
+			}
+			else if (!strcmp(strbuf, "forced")) {
+				config.forced = atoi(valbuf) > 0;
 			}
 		}
 		fclose(fp);
@@ -177,6 +181,35 @@ namespace ygo {
 			mainGame->FlashWindow();
 			return true;
 			//break;
+		}
+		case STOC_JOIN_GAME: {
+			//forced mode for DevPro ranked duels
+			if (config.forced) {
+				if (mainGame->cbDeckSelect->getSelected() == -1 ||
+					!deckManager.LoadDeck(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()))) {
+
+					return;
+				}
+				BufferIO::CopyWStr(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()),
+					mainGame->gameConf.lastdeck, 20);
+				char deckbuf[1024];
+				char* pdeck = deckbuf;
+				BufferIO::WriteInt32(pdeck, deckManager.current_deck.main.size() + deckManager.current_deck.extra.size());
+				BufferIO::WriteInt32(pdeck, deckManager.current_deck.side.size());
+				for (size_t i = 0; i < deckManager.current_deck.main.size(); ++i)
+					BufferIO::WriteInt32(pdeck, deckManager.current_deck.main[i]->first);
+				for (size_t i = 0; i < deckManager.current_deck.extra.size(); ++i)
+					BufferIO::WriteInt32(pdeck, deckManager.current_deck.extra[i]->first);
+				for (size_t i = 0; i < deckManager.current_deck.side.size(); ++i)
+					BufferIO::WriteInt32(pdeck, deckManager.current_deck.side[i]->first);
+				DuelClient::SendBufferToServer(CTOS_UPDATE_DECK, deckbuf, pdeck - deckbuf);
+				DuelClient::SendPacketToServer(CTOS_HS_READY);
+				mainGame->cbDeckSelect->setEnabled(false);
+				int selftype = (mainGame->chkHostPrepReady[0]->isEnabled()) ? 0 : 1;
+				mainGame->chkHostPrepReady[selftype]->setChecked(true);
+			}
+
+			break;
 		}
 		}
 
