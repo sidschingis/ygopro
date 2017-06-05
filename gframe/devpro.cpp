@@ -22,6 +22,8 @@ namespace ygo {
 
 	void DevPro::Init()
 	{
+		InitConfig();
+
 		irr::gui::IGUIWindow* wMainMenu = ygo::mainGame->wMainMenu;
 		irr::gui::IGUIEnvironment* env = mainGame->env;
 
@@ -50,7 +52,6 @@ namespace ygo {
 		y2 += 35;
 		mainGame->btnModeExit->setRelativePosition(rect<s32>(10, y, 270, y2));
 
-		InitConfig();
 	}
 
 	void DevPro::InitConfig()
@@ -136,6 +137,46 @@ namespace ygo {
 				ygo::devProImageManager.LoadSleeve(pkt->player, site, dir);
 			mainGame->gMutex.Unlock();
 			break;
+		}
+		case STOC_HS_PLAYER_ENTER: {
+			//PlaySound("./sound/playerenter.wav");
+			STOC_HS_PlayerEnter_DevPro* pkt = (STOC_HS_PlayerEnter_DevPro*)pdata;
+			if (pkt->pos > 3)
+				break;
+			wchar_t name[26];
+			int offset = 0;
+			offset = BufferIO::CopyWStr(pkt->name, name, 20);
+			wchar_t elo[5];
+
+			if (pkt->elo[0])
+			{
+				offset = BufferIO::CopyWStr(L"|", name, 2, offset);
+				BufferIO::CopyWStr(pkt->elo, name, 5, offset);
+			}
+
+			if (mainGame->dInfo.isTag) {
+				if (pkt->pos == 0)
+					BufferIO::CopyWStr(pkt->name, mainGame->dInfo.hostname, 20);
+				else if (pkt->pos == 1)
+					BufferIO::CopyWStr(pkt->name, mainGame->dInfo.hostname_tag, 20);
+				else if (pkt->pos == 2)
+					BufferIO::CopyWStr(pkt->name, mainGame->dInfo.clientname, 20);
+				else if (pkt->pos == 3)
+					BufferIO::CopyWStr(pkt->name, mainGame->dInfo.clientname_tag, 20);
+			}
+			else {
+				if (pkt->pos == 0)
+					BufferIO::CopyWStr(pkt->name, mainGame->dInfo.hostname, 20);
+				else if (pkt->pos == 1)
+					BufferIO::CopyWStr(pkt->name, mainGame->dInfo.clientname, 20);
+			}
+			mainGame->gMutex.Lock();
+			mainGame->stHostPrepDuelist[pkt->pos]->setText(name);
+			//mainGame->stHostPrepDuelist[pkt->pos]->setText(name);
+			mainGame->gMutex.Unlock();
+			mainGame->FlashWindow();
+			return true;
+			//break;
 		}
 		}
 

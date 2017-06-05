@@ -40,11 +40,13 @@ public:
 		p++;
 	}
 	template<typename T1, typename T2>
-	inline static int CopyWStr(T1* src, T2* pstr, int bufsize) {
-		int l = 0;
-		while(src[l] && l < bufsize - 1) {
-			pstr[l] = src[l];
+	inline static int CopyWStr(T1* src, T2* pstr, int bufsize, int offset = 0) {
+		int k = 0;
+		int l = offset;
+		while(src[k] && k < (bufsize-1)) {
+			pstr[l] = src[k];
 			l++;
+			k++;
 		}
 		pstr[l] = 0;
 		return l;
