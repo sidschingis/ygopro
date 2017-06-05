@@ -14,7 +14,7 @@ namespace ygo {
 	void GUIAIMode::Load() {
 		wchar_t strbuf[256];
 		IGUIEnvironment* env = mainGame->env;
-		myswprintf(strbuf, L"%ls - %ls", dataManager.GetSysString(2017), "Bot"/*mainGame->gameConf.botname*/);
+		myswprintf(strbuf, L"%ls - %ls", dataManager.GetSysString(2017), L"Bot"/*mainGame->gameConf.botname*/);
 		wHost = env->addWindow(rect<s32>(320, 100, 800, 320), false, strbuf);
 		wHost->getCloseButton()->setVisible(false);
 		wHost->setVisible(false);
@@ -116,7 +116,7 @@ namespace ygo {
 					}
 					Hide();
 					wchar_t args[256];
-					wsprintf(args, L"%ls %ls 0x%X", "Bot"/*mainGame->gameConf.botname*/, _comboBox[COMBOBOX_DBDECKS]->getItem(GetComboBoxIndex(COMBOBOX_DBDECKS)), PRO_VERSION);
+					wsprintf(args, L"%ls %ls 0x%X", L"Bot"/*mainGame->gameConf.botname*/, _comboBox[COMBOBOX_DBDECKS]->getItem(GetComboBoxIndex(COMBOBOX_DBDECKS)), PRO_VERSION);
 					ShellExecute(NULL, L"open", L"devbot.exe", args, NULL, IsChecked(CHECKBOX_AI_DEBUG) ? SW_SHOWDEFAULT : SW_HIDE);
 					break;
 				}
