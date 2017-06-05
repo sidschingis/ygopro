@@ -1,6 +1,9 @@
 #include "game.h"
 #include "duelclient.h"
 #include "devpro.h"
+#include "devpro_network.h"
+#include "devpro_image_manager.h"
+
 
 namespace ygo {
 	irr::gui::IGUIButton* DevPro::btnAiMode;
@@ -46,7 +49,37 @@ namespace ygo {
 		y += 35;
 		y2 += 35;
 		mainGame->btnModeExit->setRelativePosition(rect<s32>(10, y, 270, y2));
-		
+
+		InitConfig();
+	}
+
+	void DevPro::InitConfig()
+	{
+		config.enablesleeveloading = false;
+		BufferIO::CopyWStr(L"DevBot", config.botname, 20);
+
+		FILE* fp = fopen("system.conf", "r");
+		if (!fp)
+			return;
+		char linebuf[256];
+		char strbuf[32];
+		char valbuf[256];
+		wchar_t wstr[256];
+		fseek(fp, 0, SEEK_END);
+		int fsize = ftell(fp);
+		fseek(fp, 0, SEEK_SET);
+		while (ftell(fp) < fsize) {
+			fgets(linebuf, 250, fp);
+			sscanf(linebuf, "%s = %99[^\n]", strbuf, valbuf);
+			if (!strcmp(strbuf, "enable_sleeve_loading")) {
+				config.enablesleeveloading = atoi(valbuf) > 0;
+			}
+			else if (!strcmp(strbuf, "botname")) {
+				BufferIO::DecodeUTF8(valbuf, wstr);
+				BufferIO::CopyWStr(wstr, config.botname, 20);
+			}
+		}
+		fclose(fp);
 	}
 
 	void DevPro::SetForceMode(bool value) {
@@ -90,6 +123,18 @@ namespace ygo {
 		case STOC_DUEL_START: {
 			mainGame->btnLeaveGame->setText(dataManager.GetSysString(1350));
 			mainGame->btnLeaveGame->setVisible(true);
+			break;
+		}
+		case STOC_UPDATE_SLEEVE: {
+			STOC_Sleeve* pkt = (STOC_Sleeve*)pdata;
+			wchar_t site[256];
+			wchar_t dir[256];
+			BufferIO::CopyWStr(pkt->site, site, 256);
+			BufferIO::CopyWStr(pkt->dir, dir, 256);
+			mainGame->gMutex.Lock();
+			if (config.enablesleeveloading)
+				ygo::devProImageManager.LoadSleeve(pkt->player, site, dir);
+			mainGame->gMutex.Unlock();
 			break;
 		}
 		}
