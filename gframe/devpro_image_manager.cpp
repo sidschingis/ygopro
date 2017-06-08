@@ -81,13 +81,6 @@ namespace ygo {
 		if (code == 0)
 			return ygo::imageManager.tUnknown;
 
-		irr::video::ITexture* texture = ygo::devProImageManager.GetTexture(code);
-
-		if (texture)
-		{
-			return texture;
-		}
-
 		auto tit = ygo::imageManager.tMap.find(code);
 		if (tit == ygo::imageManager.tMap.end()) {
 			char file[256];

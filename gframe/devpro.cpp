@@ -54,6 +54,7 @@ namespace ygo {
 
 		window_size = dimension2du(1024, 640);
 		//mainGame->device->setResizable(true);
+		ygo::devProImageManager.Init();
 	}
 
 	void DevPro::InitConfig()
