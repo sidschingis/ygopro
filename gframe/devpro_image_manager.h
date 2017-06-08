@@ -23,6 +23,8 @@ namespace ygo {
 		void SetDevice(irr::IrrlichtDevice* dev);
 		void LoadSleeve(int player, wchar_t* site, wchar_t* dir);
 		void LoadPendingTextures();
+		irr::video::ITexture* GetTexture(int code);
+		irr::video::ITexture* GetTextureThumb(int code);
 	private:
 		IrrlichtDevice *device;
 		irr::video::IVideoDriver* driver;

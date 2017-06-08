@@ -1,4 +1,5 @@
 #include "image_manager.h"
+#include "devpro_image_manager.h"
 
 namespace ygo {
 
@@ -59,6 +60,14 @@ void ImageManager::RemoveTexture(int code) {
 irr::video::ITexture* ImageManager::GetTexture(int code) {
 	if(code == 0)
 		return tUnknown;
+	
+	irr::video::ITexture* texture = ygo::devProImageManager.GetTexture(code);
+
+	if (texture != tUnknown)
+	{
+		return texture;
+	}
+
 	auto tit = tMap.find(code);
 	if(tit == tMap.end()) {
 		char file[256];
@@ -83,7 +92,15 @@ irr::video::ITexture* ImageManager::GetTexture(int code) {
 }
 irr::video::ITexture* ImageManager::GetTextureThumb(int code) {
 	if(code == 0)
-		return tUnknown;
+		return tUnknown; 
+	
+	irr::video::ITexture* texture = ygo::devProImageManager.GetTextureThumb(code);
+
+	if (texture != tUnknown)
+	{
+		return texture;
+	}
+
 	auto tit = tThumb.find(code);
 	if(tit == tThumb.end()) {
 		char file[256];

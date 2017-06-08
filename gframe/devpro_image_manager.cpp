@@ -77,4 +77,64 @@ namespace ygo {
 		*/
 		}
 	}
+	irr::video::ITexture* DevProImageManager::GetTexture(int code) {
+		if (code == 0)
+			return ygo::imageManager.tUnknown;
+
+		irr::video::ITexture* texture = ygo::devProImageManager.GetTexture(code);
+
+		if (texture)
+		{
+			return texture;
+		}
+
+		auto tit = ygo::imageManager.tMap.find(code);
+		if (tit == ygo::imageManager.tMap.end()) {
+			char file[256];
+			sprintf(file, "expansions/pics/%d.png", code);
+			irr::video::ITexture* img = driver->getTexture(file);
+			if (img == NULL) {
+				sprintf(file, "pics/%d.png", code);
+				img = driver->getTexture(file);
+			}
+			if (img == NULL) {
+				ygo::imageManager.tMap[code] = NULL;
+				return GetTextureThumb(code);
+			}
+			else {
+				ygo::imageManager.tMap[code] = img;
+				return img;
+			}
+		}
+		if (tit->second)
+			return tit->second;
+		else
+			return GetTextureThumb(code);
+	}
+	irr::video::ITexture* DevProImageManager::GetTextureThumb(int code) {
+		if (code == 0)
+			return ygo::imageManager.tUnknown;
+		auto tit = ygo::imageManager.tThumb.find(code);
+		if (tit == ygo::imageManager.tThumb.end()) {
+			char file[256];
+			sprintf(file, "expansions/pics/thumbnail/%d.png", code);
+			irr::video::ITexture* img = driver->getTexture(file);
+			if (img == NULL) {
+				sprintf(file, "pics/thumbnail/%d.png", code);
+				img = driver->getTexture(file);
+			}
+			if (img == NULL) {
+				ygo::imageManager.tThumb[code] = NULL;
+				return ygo::imageManager.tUnknown;
+			}
+			else {
+				ygo::imageManager.tThumb[code] = img;
+				return img;
+			}
+		}
+		if (tit->second)
+			return tit->second;
+		else
+			return ygo::imageManager.tUnknown;
+	}
 }
