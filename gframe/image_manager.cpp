@@ -65,6 +65,7 @@ irr::video::ITexture* ImageManager::GetTexture(int code) {
 
 	if (texture != tUnknown)
 	{
+		tMap[code] = texture;
 		return texture;
 	}
 
@@ -98,6 +99,7 @@ irr::video::ITexture* ImageManager::GetTextureThumb(int code) {
 
 	if (texture != tUnknown)
 	{
+		tThumb[code] = texture;
 		return texture;
 	}
 

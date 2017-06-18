@@ -91,7 +91,7 @@ namespace ygo {
 				img = driver->getTexture(file);
 			}
 			if (img == NULL) {
-				return GetTextureThumb(code);
+				return ygo::imageManager.tUnknown;
 			}
 			else {
 				ygo::imageManager.tMap[code] = img;
@@ -101,7 +101,7 @@ namespace ygo {
 		if (tit->second)
 			return tit->second;
 		else
-			return GetTextureThumb(code);
+			return ygo::imageManager.tUnknown;
 	}
 	irr::video::ITexture* DevProImageManager::GetTextureThumb(int code) {
 		if (code == 0)
