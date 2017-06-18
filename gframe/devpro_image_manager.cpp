@@ -91,7 +91,6 @@ namespace ygo {
 				img = driver->getTexture(file);
 			}
 			if (img == NULL) {
-				ygo::imageManager.tMap[code] = NULL;
 				return GetTextureThumb(code);
 			}
 			else {
@@ -117,7 +116,6 @@ namespace ygo {
 				img = driver->getTexture(file);
 			}
 			if (img == NULL) {
-				ygo::imageManager.tThumb[code] = NULL;
 				return ygo::imageManager.tUnknown;
 			}
 			else {
