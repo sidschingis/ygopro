@@ -33,15 +33,15 @@ namespace ygo {
 		_editBox[EDITBOX_DRAWCOUNT]->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 		env->addStaticText(dataManager.GetSysString(1228), rect<s32>(20, 110, 360, 130), false, false, wHost);
 		_checkBox[CHECKBOX_NOSHUFFLE] = env->addCheckBox(false, rect<s32>(30, 140, 210, 160), wHost, CHECKBOX_NOSHUFFLE, dataManager.GetSysString(1230));
-		_checkBox[CHECKBOX_PRIORITY] = env->addCheckBox(false, rect<s32>(200, 140, 360, 160), wHost, CHECKBOX_PRIORITY, dataManager.GetSysString(1236));
-		/*
+		//_checkBox[CHECKBOX_PRIORITY] = env->addCheckBox(false, rect<s32>(200, 140, 360, 160), wHost, CHECKBOX_PRIORITY, dataManager.GetSysString(1236));
+		//*
 		_comboBox[COMBOBOX_DUELRULE] = env->addComboBox(rect<s32>(180, 140, 340, 160), wHost);
 		_comboBox[COMBOBOX_DUELRULE]->addItem(dataManager.GetSysString(1260));
 		_comboBox[COMBOBOX_DUELRULE]->addItem(dataManager.GetSysString(1261));
 		_comboBox[COMBOBOX_DUELRULE]->addItem(dataManager.GetSysString(1262));
 		_comboBox[COMBOBOX_DUELRULE]->addItem(dataManager.GetSysString(1263));
 		_comboBox[COMBOBOX_DUELRULE]->setSelected(DEFAULT_DUEL_RULE);
-		*/
+		//*/
 		_checkBox[CHECKBOX_AI_DEBUG] = env->addCheckBox(false, rect<s32>(30, 170, 210, 190), wHost, CHECKBOX_AI_DEBUG, dataManager.GetSysString(2016));
 		env->addStaticText(dataManager.GetSysString(2017), rect<s32>(320, 45, 470, 65), false, false, wHost);
 		_comboBox[COMBOBOX_DBDECKS] = env->addComboBox(rect<s32>(320, 65, 470, 90), wHost);
@@ -112,6 +112,17 @@ namespace ygo {
 			case irr::gui::EGET_BUTTON_CLICKED: {
 				switch (id) {
 				case BUTTON_HOST_CONFIRM: {
+					//Setup Config
+					mainGame->cbRule->setSelected(2);
+					mainGame->cbMatchMode->setSelected(0);
+					mainGame->ebStartHand->setText(_editBox[EDITBOX_STARTHAND]->getText());
+					mainGame->ebStartLP->setText(_editBox[EDITBOX_STARTLP]->getText());
+					mainGame->ebDrawCount->setText(_editBox[EDITBOX_DRAWCOUNT]->getText());
+					auto count = mainGame->cbLFlist->getItemCount() - 1;
+					mainGame->cbLFlist->setSelected((int)count);
+					mainGame->cbDuelRule->setSelected(_comboBox[COMBOBOX_DUELRULE]->getSelected());
+					mainGame->chkNoShuffleDeck->setChecked(_checkBox[CHECKBOX_NOSHUFFLE]->isChecked()); 
+					mainGame->chkNoCheckDeck->setChecked(true);
 					is_aimode = true;
 					if (!NetServer::StartServer(7911))
 						break;
