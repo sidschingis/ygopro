@@ -3,6 +3,7 @@
 #include "devpro_GUIAIMode.h"
 #include "devpro_event_handler.h"
 #include "devpro_config.h"
+#include "CGUISkinSystem\CGUISkinSystem.h"
 
 namespace ygo {
 
