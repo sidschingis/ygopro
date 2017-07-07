@@ -7,6 +7,7 @@ namespace ygo {
 		bool enablesleeveloading;
 		wchar_t botname[20];
 		bool forced;
+		int skin_index;
 	};
 
 }

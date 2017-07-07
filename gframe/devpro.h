@@ -26,11 +26,25 @@ namespace ygo {
 		recti Resize(s32 x, s32 y, s32 x2, s32 y2, bool chat = false);
 		recti Resize(recti rect, bool chat = false);
 		DevProConfig config;
+
+		// Skin System
+		int lpplayer;
+		int lpccolor;
+		int turncolor;
+		int playerlpcolor;
+		int extracolor;
+		int statcolor;
+		int bonuscolor;
+		int negativecolor;
+		int setcolor;
+		int special_color;
+		CGUISkinSystem *skinSystem;
 	private:
 		static DevPro* devPro;
 		void InitConfig();
 		void OnResize();
 		DevPro();
+		int ExtractColor(const stringw name, CGUISkinSystem *skinSystem, unsigned int normalColor);
 	}; 
 
 #define CTOS_FORCE_CHAIN	0x30

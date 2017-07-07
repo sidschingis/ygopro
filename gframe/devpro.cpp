@@ -3,6 +3,8 @@
 #include "devpro.h"
 #include "devpro_network.h"
 #include "devpro_image_manager.h"
+#include "CGUISkinSystem/CGUISkinSystem.h"
+#include <sstream>
 
 
 namespace ygo {
@@ -55,12 +57,64 @@ namespace ygo {
 		window_size = dimension2du(1024, 640);
 		//mainGame->device->setResizable(true);
 		ygo::devProImageManager.Init();
+
+
+		// Apply skin
+		special_color = 0xFF0000FF;
+		turncolor = 0x8000ffff;
+		playerlpcolor = 0xffffff00;
+		extracolor = 0xffffff00;
+		statcolor = 0xffffffff;
+		bonuscolor = 0xffffff00;
+		negativecolor = 0xffff2090;
+		setcolor = 0xff0000ff;
+
+		DevProConfig gameConf = config;
+
+		if (gameConf.skin_index >= 0)
+		{
+			skinSystem = new CGUISkinSystem("skins", mainGame->device);
+			core::array<core::stringw> skins = skinSystem->listSkins();
+			if ((size_t)gameConf.skin_index < skins.size())
+			{
+				int index = skins.size() - gameConf.skin_index - 1; // reverse index
+				if (skinSystem->applySkin(skins[index].c_str()))
+				{
+					special_color = ExtractColor(L"SpecialColor", skinSystem, special_color);
+					turncolor = ExtractColor(L"TurnColor", skinSystem, turncolor);
+					playerlpcolor = ExtractColor(L"LPColor", skinSystem, playerlpcolor);
+					extracolor = ExtractColor(L"ExtraColor", skinSystem, extracolor);
+					statcolor = ExtractColor(L"StatColor", skinSystem, statcolor);
+					bonuscolor = ExtractColor(L"BonusColor", skinSystem, bonuscolor);
+					negativecolor = ExtractColor(L"NegativeColor", skinSystem, negativecolor);
+					setcolor = ExtractColor(L"SetColor", skinSystem, setcolor);
+				}
+			}
+		}
+	}
+
+	
+	int DevPro::ExtractColor(const stringw name, CGUISkinSystem *skinSystem, unsigned int normalColor)
+	{
+		// Convert and apply special color
+		stringw spccolor = skinSystem->getProperty(name);
+		if (!spccolor.empty())
+		{
+			unsigned int x;
+			std::wstringstream ss;
+			ss << std::hex << spccolor.c_str();
+			ss >> x;
+			if (!ss.fail())
+				return x;
+		}
+		return normalColor;
 	}
 
 	void DevPro::InitConfig()
 	{
 		config.enablesleeveloading = false; 
 		config.forced = false;
+		config.skin_index = 0;
 		BufferIO::CopyWStr(L"DevBot", config.botname, 20);
 
 		FILE* fp = fopen("system.conf", "r");
@@ -85,6 +139,9 @@ namespace ygo {
 			}
 			else if (!strcmp(strbuf, "forced")) {
 				config.forced = atoi(valbuf) > 0;
+			}
+			else if (!strcmp(strbuf, "skin_index")) {
+				config.skin_index = atoi(valbuf) ;
 			}
 		}
 		fclose(fp);
