@@ -81,7 +81,7 @@ int ReplayMode::ReplayThread(void* param) {
 	int draw_count = cur_replay.ReadInt32();
 	int opt = cur_replay.ReadInt32();
 	int duel_rule = opt >> 16;
-	mainGame->dInfo.duel_rule = duel_rule - 1;
+	mainGame->dInfo.duel_rule = duel_rule;
 	set_player_info(pduel, 0, start_lp, start_hand, draw_count);
 	set_player_info(pduel, 1, start_lp, start_hand, draw_count);
 	mainGame->dInfo.lp[0] = start_lp;
@@ -185,6 +185,7 @@ int ReplayMode::ReplayThread(void* param) {
 		mainGame->closeDoneSignal.Wait();
 		mainGame->gMutex.Lock();
 		mainGame->ShowElement(mainGame->wReplay);
+		mainGame->stTip->setVisible(false);
 		mainGame->device->setEventReceiver(&mainGame->menuHandler);
 		mainGame->gMutex.Unlock();
 		if(exit_on_return)
@@ -195,9 +196,6 @@ int ReplayMode::ReplayThread(void* param) {
 void ReplayMode::Restart(bool refresh) {
 	end_duel(pduel);
 	mainGame->dInfo.isStarted = false;
-	mainGame->dField.panel = 0;
-	mainGame->dField.hovered_card = 0;
-	mainGame->dField.clicked_card = 0;
 	mainGame->dField.Clear();
 	//mainGame->device->setEventReceiver(&mainGame->dField);
 	cur_replay.Rewind();
@@ -375,7 +373,7 @@ bool ReplayMode::ReplayAnalyze(char* msg, unsigned int len) {
 		}
 		case MSG_SELECT_EFFECTYN: {
 			player = BufferIO::ReadInt8(pbuf);
-			pbuf += 8;
+			pbuf += 12;
 			return ReadReplayResponse();
 		}
 		case MSG_SELECT_YESNO: {
